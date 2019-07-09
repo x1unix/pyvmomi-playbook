@@ -962,11 +962,8 @@ except ImportError:
 # Note: Only works iff the ssl params are passing in as kwargs
 class HTTPSConnectionWrapper(object):
    def __init__(self, *args, **kwargs):
-      
-      # print(args, kwargs)
-
-      # # workaround over SSL issues
-      # kwargs['context'] = ssl._create_unverified_context()
+      # workaround over SSL issues
+      kwargs['context'] = ssl._create_unverified_context()
       wrapped = http_client.HTTPSConnection(*args, **kwargs)
       
       
