@@ -20,6 +20,8 @@ Python program for listing the vms on an ESX / vCenter host
 
 from __future__ import print_function
 
+import json
+
 import pyVmomi
 
 from pyVmomi import vim
@@ -82,6 +84,13 @@ def PrintVmInfo(vm, depth=1):
          print("IP         : ", ip)
    if summary.runtime.question != None:
       print("Question  : ", summary.runtime.question.text)
+   
+   print('IP Address :'.format(vm.guest.ipAddress))
+   hw = vm.config.hardware.device
+   for d in hw:
+      if hasattr(d, 'macAddress'):
+            print('MAC Address : {}'.format(d.macAddress))
+            print(d.__class__)
    print("")
 
 def main():
@@ -92,6 +101,7 @@ def main():
 
    atexit.register(Disconnect, si)
    content = si.RetrieveContent()
+   # print(json.dumps(content))
    for child in content.rootFolder.childEntity:
       if hasattr(child, 'vmFolder'):
          datacenter = child
